@@ -4,7 +4,13 @@
 ![Typescript](https://img.shields.io/badge/-Typescript-2c3b5a?logo=typescript&style=for-the-badge)
 
 ## 🤖 The automation
-It has been developed using Puppeteer and NestJs.
+It has been developed using Puppeteer and NestJs. Just create an `.env` file with the
+following structure
+
+```bash
+CAPITOLE_EMAIL=your.enterprise.email@capitole-consulting.com
+CAPITOLE_PASSWORD=Y0uRL0g1nP4s5w0rD
+```
 
 ## 🖥 Install and run
 > Node [v16.13.2](https://nodejs.org/download/release/v16.13.2/) was used to develop the app (npm v8.5.3).
