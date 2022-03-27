@@ -23,11 +23,11 @@ $ npm start
 ```
 
 ## 🐳 Install and run (with Docker)
-> [Docker](https://docs.docker.com/desktop/windows/install) is needed to run!
+> [Docker](https://docs.docker.com/desktop/windows/install) should be installed.
 
 ```docker
-# Running the server
-$ docker run -d --name capitole-automated-checkin -p 4004:4004 aletid5/capitole-automated-checkin
+# Running the server detached (it will run in the background)
+$ docker run -d --name capitole-automated-checkin -p 4004:4004 --env-file .env aletid5/capitole-automated-checkin
 ```
 
 ## 🔥 Features
