@@ -1,16 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Cron, Timeout } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import CheckinService from '../services/checkin.service';
 import CustomCronExpressionsEnum from '../enums/custom-cron-expressions.enum';
 
 @Injectable()
 export default class CheckinSchedule {
   constructor(private readonly checkinService: CheckinService) {}
-
-  @Timeout(1)
-  once() {
-    this.checkinService.checkin();
-  }
 
   @Cron(CustomCronExpressionsEnum.MONDAY_TO_FRIDAY_AT_8AM)
   mondayToFridayAt8AM() {
