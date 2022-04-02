@@ -2,45 +2,52 @@ import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import CheckinAction from '../actions/checkin.action';
 import CapitoleSelectorsEnum from '../enums/capitole-selectors.enum';
+import RecoveryService from './recovery.service';
 
 @Injectable()
 export default class CheckinService extends CheckinAction {
   constructor(
     @Inject(WINSTON_MODULE_NEST_PROVIDER)
     private readonly logger: LoggerService,
+    private readonly recoveryService: RecoveryService,
   ) {
     super();
   }
 
   async checkin(): Promise<void> {
-    try {
-      this.logger.log('Starting checkin...');
-      await this.start(async () => {
-        this.logger.log('Waiting for DOM to be loaded...');
-        await this.page.waitForNavigation({ waitUntil: 'networkidle0' });
-        await this.clickSelector(CapitoleSelectorsEnum.CHECKIN_BUTTON);
+    await this.recoveryService.executeWithRetry(async () => {
+      try {
+        await this.start('checkin');
+
+        await this.click(CapitoleSelectorsEnum.CHECKIN_BUTTON);
         this.logger.log('Successful checkin!');
-      });
-    } catch (e) {
-      this.logger.error(e);
-    }
+
+        await this.destroyBrowser();
+      } catch (e) {
+        await this.takeScreenshot('error');
+        throw e;
+      }
+    });
   }
 
   async checkout(): Promise<void> {
-    try {
-      this.logger.log('Starting checkout...');
-      await this.start(async () => {
-        this.logger.log('Waiting for DOM to be loaded...');
-        await this.page.waitForNavigation({ waitUntil: 'networkidle0' });
-        await this.clickSelector(CapitoleSelectorsEnum.CHECKOUT_BUTTON);
+    await this.recoveryService.executeWithRetry(async () => {
+      try {
+        await this.start('checkout');
+
+        await this.click(CapitoleSelectorsEnum.CHECKOUT_BUTTON);
         this.logger.log('Successful checkout!');
-      });
-    } catch (e) {
-      this.logger.error(e);
-    }
+
+        await this.destroyBrowser();
+      } catch (e) {
+        await this.takeScreenshot('error');
+        throw e;
+      }
+    });
   }
 
-  private async start(callback: CallableFunction): Promise<void> {
+  private async start(type: string): Promise<void> {
+    this.logger.log(`Starting ${type}...`);
     await this.createBrowser();
 
     this.logger.log('Setting user...');
@@ -59,9 +66,7 @@ export default class CheckinService extends CheckinAction {
     await this.login();
     this.logger.log('Login successful!');
 
-    await callback();
-
-    await this.destroyBrowser();
-    this.logger.log('Browser destroyed successfully!');
+    this.logger.log('Waiting for DOM to be loaded...');
+    await this.page.waitForNavigation({ waitUntil: 'networkidle0' });
   }
 }
