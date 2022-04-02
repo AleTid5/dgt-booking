@@ -1,3 +1,4 @@
+
 # Capitole Automated Checkin/Checkout
 ![Node](https://img.shields.io/badge/-Node-333?logo=node.js&style=for-the-badge)
 ![Nestjs](https://img.shields.io/badge/-Nestjs-E0234E?logo=nestjs&style=for-the-badge)
@@ -20,6 +21,22 @@ CAPITOLE_PASSWORD=Y0uRL0g1nP4s5w0rD
 # Running the server
 $ npm ci
 $ npm start
+```
+
+## 💻 Install and run (with PM2) [Recommended]
+> This way will run the application in the background.
+
+```cmd
+# Running the server
+$ npm ci
+$ npm run start:pm2
+```
+
+> Note: To run this service automatically after system reboot, use this command (Maybe you need to install **PM2** globally *npm i -g pm2*)
+
+```cmd
+$ pm2 startup systemd
+$ pm2 save
 ```
 
 ## 🐳 Install and run (with Docker)
