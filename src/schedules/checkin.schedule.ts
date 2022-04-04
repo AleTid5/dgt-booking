@@ -22,8 +22,8 @@ export default class CheckinSchedule {
     this.checkinService.checkin();
   }
 
-  @Cron(CustomCronExpressionsEnum.MONDAY_TO_THURSDAY_AT_6PM)
-  mondayToThursdayAt6PM() {
+  @Cron(CustomCronExpressionsEnum.MONDAY_TO_THURSDAY_AT_5PM)
+  mondayToThursdayAt5PM() {
     this.checkinService.checkout();
   }
 
