@@ -1,20 +1,21 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { WinstonModule } from 'nest-winston';
-import CheckinService from '../services/checkin.service';
-import CheckinSchedule from '../schedules/checkin.schedule';
+import CheckBookingService from '../services/check-booking.service';
+import BookingSchedule from '../schedules/booking.schedule';
 import winstonTransporter from '../transporters/winston.transporter';
-import RecoveryService from '../services/recovery.service';
 
 @Module({
   imports: [
+    HttpModule,
     ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     WinstonModule.forRoot({
       transports: winstonTransporter,
     }),
   ],
-  providers: [CheckinService, CheckinSchedule, RecoveryService],
+  providers: [BookingSchedule, CheckBookingService],
 })
 export default class AppModule {}
