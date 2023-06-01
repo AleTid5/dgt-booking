@@ -25,10 +25,10 @@ export const headers = {
   'sec-ch-ua-platform': '"macOS"',
 };
 
-export const getData = (): string => {
+export const getData = (cityId: number): string => {
   const data = new URLSearchParams();
   data.append('publicacionesForm', 'publicacionesForm');
-  data.append('publicacionesForm:oficina', '27');
+  data.append('publicacionesForm:oficina', String(cityId));
   data.append('publicacionesForm:foco', 'publicacionesForm:oficina');
   data.append('publicacionesForm:tipoTramite', '3');
   data.append('publicacionesForm:pais', '22');
